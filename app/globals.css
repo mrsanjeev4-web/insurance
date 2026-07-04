@@ -1,0 +1,504 @@
+@import "tailwindcss";
+
+/* ===========================
+   INSURANCE INFO WEBSITE
+   FINAL DESIGN SYSTEM
+   =========================== */
+
+
+/* =========================================
+   RESPONSIVE CONTAINER + SECTION SYSTEM — NOTES
+   (fluid — uses clamp(), no breakpoint jumps)
+   =========================================
+
+   .container
+   -> KYA: content ko wrap karta hai, width 100% but max-width 1920px
+      pe cap kar deta hai, aur center mein align karta hai. Side
+      padding bhi yahi deta hai (--page-padding).
+   -> KAB: HAR section ke andar lagao, content ke sabse bahar wale
+      wrapper pe. Ye hamesha .main-section ke andar pehla child hota hai.
+   -> KYU: bahut bade screens (4K/ultrawide) pe content edge-to-edge
+      stretch nahi hona chahiye, warna text lines bahut lambi ho jaati hain.
+
+   .main-section
+   -> KYA: top/bottom (vertical) padding deta hai — bada gap.
+   -> KAB: page ke BADE blocks pe lagao — Hero, Coverage, Trust,
+      How-it-works, CTA, Footer-band. Har naya "page section" ek
+      .main-section hona chahiye.
+   -> VALUE: 64px (mobile) se 120px (1920px+) tak smoothly badhta hai.
+
+   .sub-section
+   -> KYA: bottom margin deta hai — chhota gap.
+   -> KAB: .main-section ke ANDAR, chhote groups pe — jaise heading +
+      intro paragraph wala block, jo neeche cards/grid se pehle aata
+      hai. Ek .main-section ke andar 1-2 .sub-section ho sakte hain.
+   -> VALUE: 28px (mobile) se 48px (1920px+) tak smoothly badhta hai.
+
+   .card-grid-gap
+   -> KYA: grid/flex container ka "gap" property set karta hai.
+   -> KAB: jahan multiple cards/items ek row ya grid mein dikh rahe
+      hain (coverage cards, pricing cards, feature list).
+   -> VALUE: 18px (mobile) se 24px (1920px+) tak smoothly badhta hai.
+
+   .section-padding-x
+   -> KYA: sirf LEFT-RIGHT (inline) padding deta hai.
+   -> KAB: jab kisi full-width section/wrapper ko sirf horizontal
+      breathing room chahiye ho, .container ke bahar/alag se.
+   -> VALUE: 20px (mobile) se 90px (1920px+) tak smoothly badhta hai.
+
+   .section-padding-y
+   -> KYA: sirf TOP-BOTTOM (block) padding deta hai.
+   -> KAB: jab kisi block ko sirf vertical breathing room chahiye ho
+      — .main-section se chhota/alag rhythm chahiye to.
+   -> VALUE: 22px (mobile) se 45px (1920px+) tak smoothly badhta hai.
+
+   ---------------------------------------------------------
+   NESTING ORDER (yaad rakhne wali structure):
+
+   .main-section
+     └── .container
+           └── .sub-section        (heading + paragraph)
+           └── [grid + .card-grid-gap]
+                 └── card 1, card 2, card 3...
+
+   ---------------------------------------------------------
+   KYU clamp() USE KIYA:
+
+   Pehle media-query se spacing change hoti thi — ek fixed breakpoint
+   (jaise 768px) ke is taraf ek value, us taraf doosri value. Resize
+   karte waqt ye achanak "jump" karti thi.
+
+   clamp(min, preferred, max) teen values leta hai:
+     min        -> sabse chhoti value (chhote phone pe)
+     preferred  -> vw-based value, screen ke saath continuously badhti hai
+     max        -> sabse badi value (jis screen-width pe ruk jaani chahiye,
+                   yahan 1920px reference rakha gaya hai)
+
+   Result: resize karte waqt spacing smoothly badhti/ghatti hai,
+   koi sudden jump nahi, koi alag breakpoint likhne ki zaroorat nahi.
+
+   Kahan clamp() NAHI lagaya: colors, border-radius, shadows,
+   border-width — ye screen size se related nahi hain, fixed rehni
+   chahiye.
+
+   ---------------------------------------------------------
+   clamp() ka "preferred" part kaise nikla (vw formula):
+
+   Formula: preferred_vw = (target_px_at_1920 / 1920) * 100
+
+   Example .section-padding-x ke liye:
+     target @ 1920px = 90px
+     90 / 1920 * 100 = 4.6875vw  →  4.6875vw
+   Example .section-padding-y ke liye:
+     target @ 1920px = 45px
+     45 / 1920 * 100 = 2.34375vw  →  2.34vw
+
+   Mobile floor (min value) hamesha standard, comfortable mobile
+   spacing ke hisaab se chuna gaya hai (na ki sirf formula se), taaki
+   chhoti screen pe content squeezed na lage.
+   ========================================= */
+
+
+:root {
+  /* ========= BRAND ========= */
+  --primary: #0F4C81;
+  --primary-light: #1D6FB8;
+  --primary-dark: #0A355A;
+
+  --secondary: #10B981;
+  --secondary-light: #34D399;
+  --secondary-dark: #059669;
+
+  /* ========= BACKGROUNDS ========= */
+  --background: #F8FAFC;
+  --surface: #FFFFFF;
+  --surface-hover: #F1F5F9;
+
+  /* ========= TEXT ========= */
+  --text: #1E293B;
+  --text-light: #475569;
+  --muted: #64748B;
+
+  /* ========= BORDERS ========= */
+  --border: #E2E8F0;
+  /* default border — cards, inputs, dividers */
+  --border-light: #EDF2F7;
+  /* subtle separators, table rows */
+  --border-strong: #CBD5E1;
+  /* hover / focus-visible / active outlines */
+  --border-accent: #93C5FD;
+  /* focus ring on inputs (blue-tinted) */
+
+  /* ========= SHADOWS ========= */
+  --shadow-sm: 0 2px 8px rgba(15, 76, 129, 0.05);
+  --shadow-md: 0 8px 24px rgba(15, 76, 129, 0.08);
+  --shadow-lg: 0 16px 40px rgba(15, 76, 129, 0.12);
+
+  /* ========= GRADIENTS ========= */
+  --gradient-page: linear-gradient(135deg, #F0F7FF 0%, #F8FAFC 50%, #F3FFF9 100%);
+  --gradient-hero: linear-gradient(135deg, #0F4C81 0%, #1D6FB8 50%, #0A355A 100%);
+  --gradient-button: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  --gradient-accent: linear-gradient(135deg, rgba(15, 76, 129, 0.08), rgba(16, 185, 129, 0.08));
+
+  /* ========= SECTION BACKGROUNDS =========
+     Two alternating background types for full-width sections —
+     pure flat color felt empty, so both are clearly-visible gradients.
+     Use one, then the other, on the next section, then back —
+     creates rhythm down the page without ever being a flat block. */
+
+  /* TYPE 1 — "light" section: neutral-to-blue drift, medium strength.
+     Not pure white, not too bold — clearly a gradient, stays calm. */
+  --gradient-section-light: linear-gradient(135deg, #FFFFFF 0%, #EAF1F8 50%, #DCE9F5 100%);
+
+  /* TYPE 2 — "brand" section: blue + green mixed, medium strength.
+     Visibly tinted with both brand colors while staying light enough
+     for dark text to read clearly on top. */
+  --gradient-section-brand: linear-gradient(135deg, #DCEAFB 0%, #D7F0E8 50%, #DCEAFB 100%);
+
+  /* ========= RADIUS ========= */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  /* ========= LAYOUT WIDTHS ========= */
+  --container-max: 1920px;
+  /* hard ceiling — content won't stretch past this even on bigger screens */
+
+  /* fluid gutter: 16px at small phones -> 48px at 1920px+, scales smoothly */
+  --page-padding: clamp(16px, 4vw, 48px);
+
+  /* ========= FLUID SPACING SCALE =========
+     clamp(min, preferred, max) = (floor, viewport-based ideal, ceiling)
+     No breakpoint jumps — value grows continuously with screen width. */
+  --space-2xs: clamp(6px, 0.6vw, 8px);
+  --space-xs: clamp(10px, 1vw, 12px);
+  --space-sm: clamp(14px, 1.5vw, 16px);
+  --space-md: clamp(18px, 2vw, 24px);
+  --space-lg: clamp(24px, 2.8vw, 32px);
+  --space-xl: clamp(28px, 4vw, 48px);
+  --space-2xl: clamp(40px, 5.5vw, 64px);
+  --space-3xl: clamp(56px, 7.5vw, 96px);
+  /* main-section padding, mid range */
+  --space-4xl: clamp(64px, 9vw, 120px);
+  /* main-section padding, large screens */
+
+  /* ========= FONTS ========= */
+  --font-heading: "Plus Jakarta Sans", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+/* ========= TAILWIND v4 THEME BINDING ========= */
+@theme inline {
+  /* Colors */
+  --color-primary: var(--primary);
+  --color-primary-light: var(--primary-light);
+  --color-primary-dark: var(--primary-dark);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-light: var(--secondary-light);
+  --color-secondary-dark: var(--secondary-dark);
+
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+
+  --color-text: var(--text);
+  --color-text-light: var(--text-light);
+  --color-muted: var(--muted);
+
+  --color-border: var(--border);
+  --color-border-light: var(--border-light);
+  --color-border-strong: var(--border-strong);
+  --color-border-accent: var(--border-accent);
+
+  /* Fonts */
+  --font-heading: var(--font-heading);
+  --font-body: var(--font-body);
+
+  /* Radius */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+}
+
+/* ========= DARK MODE ========= */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0B1424;
+    --surface: #111B2E;
+    --surface-hover: #16213A;
+
+    --text: #F1F5F9;
+    --text-light: #CBD5E1;
+    --muted: #94A3B8;
+
+    --border: #233048;
+    --border-light: #1B2738;
+    --border-strong: #324769;
+    --border-accent: #1D6FB8;
+
+    --gradient-page: linear-gradient(135deg, #0B1424 0%, #0F1B2E 50%, #0B1F1A 100%);
+    --gradient-section-light: linear-gradient(135deg, #0B1424 0%, #122236 50%, #16314D 100%);
+    --gradient-section-brand: linear-gradient(135deg, #122236 0%, #14352E 50%, #122236 100%);
+
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.45);
+  }
+}
+
+/* ========= BASE BODY ========= */
+body {
+  background: var(--gradient-page);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ========= HEADINGS ========= */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  color: var(--text);
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: clamp(32px, 4vw, 48px);
+}
+
+h2 {
+  font-size: clamp(26px, 3vw, 36px);
+}
+
+h3 {
+  font-size: clamp(22px, 2.2vw, 28px);
+}
+
+small,
+.text-small {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* ========= LINKS ========= */
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--primary-light);
+}
+
+/* ========= SELECTION ========= */
+::selection {
+  background: var(--secondary-light);
+  color: #FFFFFF;
+}
+
+/* ========= SCROLLBAR ========= */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: var(--radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted);
+}
+
+/* =========================================
+   BORDER UTILITY CLASSES (recommended combo)
+   ========================================= */
+
+/* Default card / container border */
+.border-default {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.border-default:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
+}
+
+/* Subtle divider line */
+.border-divider {
+  border-bottom: 1px solid var(--border-light);
+}
+
+/* Input fields */
+.input-field {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  padding: 10px 14px;
+  font-size: 16px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 3px var(--border-accent);
+}
+
+/* Buttons */
+.btn-primary {
+  background: var(--gradient-button);
+  color: #FFFFFF;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 12px 24px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.btn-primary:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--primary);
+  border: 1.5px solid var(--primary);
+  border-radius: var(--radius-sm);
+  padding: 12px 24px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.btn-outline:hover {
+  background: var(--primary);
+  color: #FFFFFF;
+}
+
+/* Hero section */
+.hero-section {
+  background: var(--gradient-hero);
+  color: #FFFFFF;
+  border-radius: var(--radius-lg);
+}
+
+/* Accent panel (e.g. info / tip box) */
+.accent-panel {
+  background: var(--gradient-accent);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 20px;
+}
+
+/* =========================================
+   RESPONSIVE CONTAINER + SECTION SYSTEM
+   (fluid — uses clamp(), no breakpoint jumps)
+   =========================================
+   .container      -> wraps content, caps width, centers it
+   .main-section   -> big vertical gap between major page blocks
+                      (Hero, Coverage, Trust, CTA, etc.)
+   .sub-section    -> smaller gap for groups inside a main section
+                      (e.g. heading+intro block before a card grid)
+   .card-grid-gap  -> gap for card/grid layouts
+   .section-padding-x -> standalone left/right padding (90px @ 1920px)
+   .section-padding-y -> standalone top/bottom padding (45px @ 1920px)
+ 
+   Every value below is a clamp(min, preferred, max), so spacing grows
+   and shrinks continuously as the viewport resizes — no sudden jump
+   at a breakpoint line, no resize-jank.
+*/
+
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  /* 1920px ceiling */
+  margin-inline: auto;
+  padding-inline: var(--page-padding);
+}
+
+.main-section {
+  padding-block: var(--space-2xl);
+}
+
+.sub-section {
+  margin-bottom: var(--space-xl);
+}
+
+.card-grid-gap {
+  gap: var(--space-md);
+}
+
+/* Left/right padding only.
+   Mobile floor: 20px (standard comfortable mobile gutter).
+   Scales up to 90px exactly at 1920px viewport width, then caps. */
+.section-padding-x {
+  padding-inline: clamp(20px, 4.6875vw, 90px);
+}
+
+/* Top/bottom padding only.
+   Mobile floor: 22px (standard comfortable mobile vertical rhythm).
+   Scales up to 45px exactly at 1920px viewport width, then caps. */
+.section-padding-y {
+  padding-block: clamp(22px, 2.34375vw, 45px);
+}
+
+/* =========================================
+   SECTION BACKGROUND UTILITIES
+   Alternate these on consecutive .main-section
+   blocks down the page — light, brand, light, brand...
+   ========================================= */
+
+.section-light {
+  background: var(--gradient-section-light);
+}
+
+.section-brand {
+  background: var(--gradient-section-brand);
+}
+
+/* ========= DESCRIPTION / BODY COPY ========= */
+.discription-under-h2 {
+  font-size: clamp(18px, 1.5625vw, 20px);
+  color: var(--text-light);
+  line-height: 1.7;
+  font-family: var(--font-body);
+}
+
+.card-title {
+  font-size: clamp(20px, 1.14583vw, 22px);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text);
+  font-family: var(--font-heading);
+}
+
+.card-description {
+  font-size: clamp(16px, 1.40625vw, 18px);
+  color: var(--muted);
+  line-height: 1.7;
+  font-family: var(--font-body);
+}
