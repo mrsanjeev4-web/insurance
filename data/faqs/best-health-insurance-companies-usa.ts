@@ -12,7 +12,7 @@ export interface FaqItem {
     a: string;
 }
 
-const bestHealthInsuranceFaqs: FaqItem[] = [
+export const bestHealthInsuranceFaqs: FaqItem[] = [
     {
         q: "What is the best health insurance company in the USA?",
         a: "Kaiser Permanente is often recognized for customer satisfaction, while UnitedHealthcare offers the largest provider network. The best company depends on your location, budget, and healthcare needs.",
