@@ -1,9 +1,11 @@
-import { BestForGrid, CompanyCard, ComparisonTable, FAQAccordion, Hero, QuickNav, SiteFooter, SiteHeader } from "@/components";
+import { BestForGrid, CompanyCard, ComparisonTable, FAQAccordion, Hero, Navbar, QuickNav, SiteFooter, SiteHeader } from "@/components";
+
 import { companies } from "@/data";
 
 export default function Home() {
  return (
     <>
+    <Navbar/>
       <SiteHeader />
 
       <main id="main-content" style={{ flex: 1 }}>

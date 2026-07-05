@@ -9,7 +9,7 @@ export { default as Hero} from "@/components/BestCompany/Hero"
 export { default as QuickNav} from "@/components/BestCompany/QuickNav"
 export { default as SiteFooter} from "@/components/BestCompany/SiteFooter"
 export { default as SiteHeader} from "@/components/BestCompany/SiteHeader"
-
+export {default as Navbar} from "@/components/NavBar/Navbar"
 
 
 
