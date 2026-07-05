@@ -1,4 +1,4 @@
-import { bestForList } from "@/data/companies";
+import { bestForList } from "@/data";
 
 export default function BestForGrid() {
   return (

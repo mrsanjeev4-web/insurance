@@ -1,4 +1,4 @@
-export interface Company {
+export interface CompanyInterfaceHome {
   rank: number;
   id: string;
   name: string;
@@ -11,7 +11,7 @@ export interface Company {
   websiteLabel: string;
 }
 
-export const companies: Company[] = [
+export const companies: CompanyInterfaceHome[] = [
   {
     rank: 1,
     id: "unitedhealthcare",
@@ -453,7 +453,7 @@ export interface FAQ {
   answer: string;
 }
 
-export const faqs: FAQ[] = [
+export const companyFaqs: FAQ[] = [
   {
     question: "Which health insurance company has the largest provider network?",
     answer:

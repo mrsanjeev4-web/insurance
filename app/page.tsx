@@ -6,8 +6,7 @@ export default function Home() {
  return (
     <>
     <Navbar/>
-      <SiteHeader />
-
+   
       <main id="main-content" style={{ flex: 1 }}>
         <Hero />
 

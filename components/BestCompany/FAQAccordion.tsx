@@ -1,14 +1,15 @@
 "use client";
 
+import { companyFaqs } from "@/data";
 import { useState } from "react";
-import { faqs } from "@/data/companies";
+
 
 export default function FAQAccordion() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
     <div style={{ display: "grid", gap: "var(--space-sm)" }}>
-      {faqs.map((faq, i) => {
+      {companyFaqs.map((faq, i) => {
         const isOpen = openIndex === i;
         return (
           <div key={faq.question} className="accordion-item" data-open={isOpen}>

@@ -1,4 +1,4 @@
-import { comparisonRows } from "@/data/companies";
+import { comparisonRows } from "@/data";
 
 function Stars({ count }: { count: number }) {
   return (

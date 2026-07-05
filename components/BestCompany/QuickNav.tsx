@@ -1,4 +1,4 @@
-import { companies } from "@/data/companies";
+import { companies } from "@/data";
 
 export default function QuickNav() {
   return (

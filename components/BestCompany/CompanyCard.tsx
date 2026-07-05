@@ -1,6 +1,7 @@
-import type { Company } from "@/data/companies";
+import { CompanyInterfaceHome } from "@/data/compnies/info";
 
-export default function CompanyCard({ company }: { company: Company }) {
+
+export default function CompanyCard({ company }: { company: CompanyInterfaceHome }) {
   return (
     <article
       id={company.id}
