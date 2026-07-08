@@ -25,7 +25,7 @@ export default function Hero() {
               style={{ color: "rgba(255,255,255,0.85)", marginTop: "var(--space-md)" }}
             >
               Compare the top {companies.length} health insurance providers on network size,
-              Medicare and ACA Marketplace coverage, and digital tools — so you can pick the
+              Medicare and ACA Marketplace coverage, and digital tools - so you can pick the
               plan that actually fits your budget, your doctors, and your state.
             </p>
 
